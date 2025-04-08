@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mt365.sbootfds.mapper.StockMapper">
+
+    <insert id="insert">
+        insert into 基础信息 (ts_code, symbol, name, area, industry, list_date)
+        values (#{ts_code}, #{symbol}, #{name}, #{area}, #{industry}, #{list_date})
+    </insert>
+
+    <delete id="deleteById">
+        delete from 基础信息 where ts_code = #{ts_code}
+    </delete>
+
+    <select id="selectAlll">
+        select * from 基础信息 order by ts_code desc
+    </select>
+
+
+    <!--动态sql-->
+    <select id="selectAll" resultType="com.mt365.sbootfds.entity.Stock">
+        select * from 基础信息
+        <where>
+            <if test="name != null">
+                name like concat('%', #{name}, '%')
+            </if>
+        </where>
+--         order by ts_code desc
+    </select>
+
+    <!--动态修改-->
+    <update id="updateById">
+        update 基础信息
+        <set>
+            <if test="symbol != null">
+                symbol = #{symbol},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="area != null">
+                area = #{area},
+            </if>
+            <if test="industry != null">
+                industry = #{industry},
+            </if>
+            <if test="list_date != null">
+                list_date = #{list_date},
+            </if>
+        </set>
+        where ts_code = #{ts_code}
+    </update>
+
+    <select id="selectById" resultType="com.mt365.sbootfds.entity.Stock">
+        select * from 基础信息 where ts_code = #{ts_code}
+    </select>
+
+    <select id="selectBySymbol" resultType="com.mt365.sbootfds.entity.Stock">
+        select * from 基础信息 where symbol = #{symbol}
+    </select>
+
+</mapper>

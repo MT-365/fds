@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mt365.sbootfds.mapper.AdminMapper">
+
+    <resultMap id="AdminResultMap" type="com.mt365.sbootfds.entity.Admin">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+    </resultMap>
+
+    <select id="selectAdminById" resultMap="AdminResultMap">
+        SELECT * FROM admin WHERE id = #{id}
+    </select>
+
+
+    <insert id="insert">
+        insert into admin (username, password, name, avatar, role)
+        values (#{username}, #{password}, #{name}, #{avatar}, #{role})
+    </insert>
+
+    <delete id="deleteById">
+        delete from admin where id = #{id}
+    </delete>
+
+    <!--动态sql-->
+    <select id="selectAll" resultType="com.mt365.sbootfds.entity.Admin">
+        select * from admin
+        <where>
+            <if test="name != null">
+                name like concat('%', #{name}, '%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <!--动态修改-->
+    <update id="updateById">
+        update admin
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="role!= null">
+                role = #{role},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.mt365.sbootfds.entity.Admin">
+        select * from admin where id = #{id}
+    </select>
+
+    <select id="selectByUsername" resultType="com.mt365.sbootfds.entity.Admin">
+        select * from admin where username = #{username}
+    </select>
+
+    <update id="updateAvatarPath">
+        update admin
+        set avatar = #{avatarPath}
+        where id = #{id}
+    </update>
+</mapper>
